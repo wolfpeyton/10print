@@ -2,18 +2,48 @@
   one possible implemenation of the 10print.org algorithm written in JavaScript
 */
 
-const chars = [['╭', '╰'], ['╮', '╯']]
+/* 2D object with each cell containing a list of the legal 
+characters given the character to the left of and above it */
+
+const left_down = '╮'
+const left_up = '╯'
+const left_right = '─'
+const right_down = '╭'
+const right_up = '╰'
+const down_up = '│'
+
+const legalChars = (left, above) => {
+  legals = [left_down, left_up, left_right, right_down, right_up, down_up]
+  return legals.filter((c) => {
+    if (left === left_down || left === left_up || left === down_up || left === '') {
+      return c !== left_down && c !== left_up && c !== left_right
+    } else {
+      return c === left_down || c === left_up || c === left_right
+    }
+  }).filter((c) => {
+    if (above === left_up || above === left_right || above === right_up || above === '') {
+      return c !== left_up && c !== right_up && c !== down_up
+    } else {
+      return c === left_up || c === right_up || c === down_up
+    }
+  })
+}
+
 const w = process.stdout.columns
 
-function draw () {
-  setTimeout(draw, 1000 / 4)
-  let output = []
-  let lr = 0
-  for (let i = 0; i < w; i++) {
-    output += chars[lr][Math.floor(Math.random() * chars[lr].length)]
-    lr ^= 1; // XOR lr with one, causes it to oscillate between 0 and 1
+async function draw () {
+  let aboveArray = []
+  for (;;) {
+    let output = []
+    let prev = ''
+    for (let i = 0; i < w; i++) {
+      const legals = legalChars(prev, aboveArray.length > 0 ? aboveArray[i] : '')
+      output += legals[Math.floor(Math.random() * legals.length)]
+    }
+    console.log(output)
+    aboveArray = output
+    await new Promise(r => setTimeout(r, 1000));
   }
-  console.log(output)
 }
 
 draw()
