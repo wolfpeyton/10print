@@ -38,7 +38,8 @@ async function draw () {
     let prev = ''
     for (let i = 0; i < w; i++) {
       const legals = legalChars(prev, aboveArray.length > 0 ? aboveArray[i] : '')
-      output += legals[Math.floor(Math.random() * legals.length)]
+      prev = legals[Math.floor(Math.random() * legals.length)]
+      output += prev
     }
     console.log(output)
     aboveArray = output
