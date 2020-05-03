@@ -1,9 +1,6 @@
 /*
-  one possible implemenation of the 10print.org algorithm written in JavaScript
+  10print algorithm which guarantees connected shapes
 */
-
-/* 2D object with each cell containing a list of the legal 
-characters given the character to the left of and above it */
 
 const left_down = '╮'
 const left_up = '╯'
@@ -43,7 +40,7 @@ async function draw () {
     }
     console.log(output)
     aboveArray = output
-    await new Promise(r => setTimeout(r, 1000));
+    await new Promise(r => setTimeout(r, 1000 / 12));
   }
 }
 
